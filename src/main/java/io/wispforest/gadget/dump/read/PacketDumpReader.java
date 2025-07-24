@@ -5,9 +5,13 @@ import io.wispforest.gadget.client.dump.SearchWord;
 import io.wispforest.gadget.dump.fake.GadgetReadErrorPacket;
 import io.wispforest.gadget.dump.fake.GadgetWriteErrorPacket;
 import io.wispforest.gadget.dump.read.handler.PlainTextPacketDumper;
-import io.wispforest.gadget.util.*;
+import io.wispforest.gadget.util.CancellationToken;
+import io.wispforest.gadget.util.FormattedDumper;
+import io.wispforest.gadget.util.ProgressToast;
+import io.wispforest.gadget.util.ReflectionUtil;
+import io.wispforest.gadget.util.ThrowableUtil;
+import io.wispforest.gadget.util.TimeUtil;
 import net.minecraft.client.resource.language.I18n;
-import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;

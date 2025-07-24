@@ -2,7 +2,11 @@ package io.wispforest.gadget.field;
 
 import com.google.gson.stream.JsonWriter;
 import io.wispforest.gadget.Gadget;
-import io.wispforest.gadget.desc.*;
+import io.wispforest.gadget.desc.BytesFieldObject;
+import io.wispforest.gadget.desc.ComplexFieldObject;
+import io.wispforest.gadget.desc.ErrorFieldObject;
+import io.wispforest.gadget.desc.NbtCompoundFieldObject;
+import io.wispforest.gadget.desc.PrimitiveFieldObject;
 import io.wispforest.gadget.mappings.MappingsManager;
 import io.wispforest.gadget.network.FieldData;
 import io.wispforest.gadget.path.FieldPathStep;

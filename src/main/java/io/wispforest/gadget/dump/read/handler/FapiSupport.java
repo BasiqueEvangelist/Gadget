@@ -2,7 +2,6 @@ package io.wispforest.gadget.dump.read.handler;
 
 import io.wispforest.gadget.dump.read.unwrapped.LinesUnwrappedPacket;
 import io.wispforest.gadget.util.ErrorSink;
-import io.wispforest.gadget.util.NetworkUtil;
 import net.fabricmc.fabric.impl.networking.CommonRegisterPayload;
 import net.fabricmc.fabric.impl.networking.CommonVersionPayload;
 import net.fabricmc.fabric.impl.networking.RegistrationPayload;

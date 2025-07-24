@@ -35,7 +35,7 @@ public interface FakeGadgetPacket extends Packet<PacketListener> {
     }
 
     @Override
-    default PacketType<? extends Packet<PacketListener>> getPacketId() {
+    default PacketType<? extends Packet<PacketListener>> getPacketType() {
         throw new IllegalStateException();
     }
     // endregion

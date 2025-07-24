@@ -10,26 +10,30 @@ import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.container.ScrollContainer;
-import io.wispforest.owo.ui.core.*;
+import io.wispforest.owo.ui.core.Color;
+import io.wispforest.owo.ui.core.CursorStyle;
+import io.wispforest.owo.ui.core.HorizontalAlignment;
+import io.wispforest.owo.ui.core.Insets;
+import io.wispforest.owo.ui.core.OwoUIAdapter;
+import io.wispforest.owo.ui.core.Positioning;
+import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.Surface;
+import io.wispforest.owo.ui.core.VerticalAlignment;
 import io.wispforest.owo.ui.util.UISounds;
 import io.wispforest.owo.util.Observable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.ComponentMapImpl;
+import net.minecraft.component.MergedComponentMap;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
-import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class StackComponentDataScreen extends BaseOwoScreen<FlowLayout> {
@@ -57,7 +61,7 @@ public class StackComponentDataScreen extends BaseOwoScreen<FlowLayout> {
                     .ifSuccess(newChanges -> {
                         currentEncodingError.set(null);
 
-                        ((ComponentMapImpl) stack.getComponents()).setChanges(newChanges);
+                        ((MergedComponentMap) stack.getComponents()).setChanges(newChanges);
                         stack.getItem().postProcessComponents(stack);
 
                         if (parent instanceof CreativeInventoryScreen) {

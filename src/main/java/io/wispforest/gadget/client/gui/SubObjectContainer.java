@@ -2,7 +2,12 @@ package io.wispforest.gadget.client.gui;
 
 import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
-import io.wispforest.owo.ui.core.*;
+import io.wispforest.owo.ui.core.Component;
+import io.wispforest.owo.ui.core.CursorStyle;
+import io.wispforest.owo.ui.core.Insets;
+import io.wispforest.owo.ui.core.OwoUIDrawContext;
+import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.Surface;
 import io.wispforest.owo.ui.util.UISounds;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.RotationAxis;
@@ -160,4 +165,3 @@ public class SubObjectContainer extends FlowLayout {
         }
     }
 }
-

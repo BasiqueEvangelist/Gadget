@@ -1,6 +1,5 @@
 package io.wispforest.gadget.util;
 
-import net.minecraft.text.Text;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public final class TimeUtil {

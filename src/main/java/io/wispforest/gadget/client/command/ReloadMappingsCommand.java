@@ -1,12 +1,12 @@
 package io.wispforest.gadget.client.command;
 
+import com.google.common.io.MoreFiles;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.wispforest.gadget.mappings.MappingsManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.text.Text;
-import org.spongepowered.include.com.google.common.io.MoreFiles;
 
 import java.io.IOException;
 import java.nio.file.Files;

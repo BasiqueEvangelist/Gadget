@@ -1,8 +1,16 @@
 package io.wispforest.gadget.util;
 
 import io.wispforest.gadget.decompile.QuiltflowerVersions;
-import io.wispforest.gadget.mappings.*;
-import io.wispforest.owo.config.annotation.*;
+import io.wispforest.gadget.mappings.LocalMappings;
+import io.wispforest.gadget.mappings.Mappings;
+import io.wispforest.gadget.mappings.MojangMappings;
+import io.wispforest.gadget.mappings.QuiltMappings;
+import io.wispforest.gadget.mappings.YarnMappings;
+import io.wispforest.owo.config.annotation.Config;
+import io.wispforest.owo.config.annotation.Hook;
+import io.wispforest.owo.config.annotation.Nest;
+import io.wispforest.owo.config.annotation.PredicateConstraint;
+import io.wispforest.owo.config.annotation.RestartRequired;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.SemanticVersion;
 import net.fabricmc.loader.api.Version;

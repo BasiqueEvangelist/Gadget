@@ -6,8 +6,16 @@ import io.wispforest.owo.ui.component.Components;
 import io.wispforest.owo.ui.component.LabelComponent;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
-import io.wispforest.owo.ui.core.*;
+import io.wispforest.owo.ui.core.Color;
+import io.wispforest.owo.ui.core.HorizontalAlignment;
+import io.wispforest.owo.ui.core.Insets;
+import io.wispforest.owo.ui.core.OwoUIAdapter;
+import io.wispforest.owo.ui.core.Positioning;
+import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.core.Surface;
+import io.wispforest.owo.ui.core.VerticalAlignment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
@@ -25,6 +33,8 @@ public class ProgressToastImpl implements Toast, ProgressToast {
     private long stopTime = 0;
     private LongSupplier following = null;
     private long followingTotal = 0;
+
+    private Visibility visibility = Visibility.HIDE;
 
     public ProgressToastImpl(Text headText) {
         this.adapter = OwoUIAdapter.createWithoutScreen(0, 0, 160, 32, Containers::verticalFlow);
@@ -53,7 +63,7 @@ public class ProgressToastImpl implements Toast, ProgressToast {
     }
 
     @Override
-    public Visibility draw(DrawContext ctx, ToastManager manager, long startTime) {
+    public void draw(DrawContext context, TextRenderer textRenderer, long startTime) {
         long value = following == null ? -1 : following.getAsLong();
 
         if (value < 0) {
@@ -63,18 +73,28 @@ public class ProgressToastImpl implements Toast, ProgressToast {
             progressBox.horizontalSizing(Sizing.fixed((int) (value * 140 / followingTotal)));
         }
 
-        this.adapter.render(ctx, 0, 0, client.getRenderTickCounter().getTickDelta(false));
+        this.adapter.render(context, 0, 0, client.getRenderTickCounter().getTickDelta(false));
+    }
 
-        if (stopTime == -1)
-            stopTime = startTime + 1;
-        else if (stopTime == -2)
-            return Visibility.HIDE;
+    @Override
+    public void update(ToastManager manager, long time) {
+        if (stopTime == -1) {
+            stopTime = time + 1;
+        }  else if (stopTime == -2) {
+            this.visibility = Visibility.HIDE;
+            return;
+        }
 
         if (stopTime == 0) {
-            return Visibility.SHOW;
+            this.visibility = Visibility.SHOW;
         } else {
-            return startTime - stopTime > 2500 ? Visibility.HIDE : Visibility.SHOW;
+            this.visibility = time - stopTime > 2500 ? Visibility.HIDE : Visibility.SHOW;
         }
+    }
+
+    @Override
+    public Visibility getVisibility() {
+        return this.visibility;
     }
 
     @Override

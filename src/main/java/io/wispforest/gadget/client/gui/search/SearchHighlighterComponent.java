@@ -4,7 +4,11 @@
 package io.wispforest.gadget.client.gui.search;
 
 import io.wispforest.owo.ui.base.BaseComponent;
-import io.wispforest.owo.ui.core.*;
+import io.wispforest.owo.ui.core.Color;
+import io.wispforest.owo.ui.core.Easing;
+import io.wispforest.owo.ui.core.OwoUIDrawContext;
+import io.wispforest.owo.ui.core.Positioning;
+import io.wispforest.owo.ui.core.Sizing;
 
 public class SearchHighlighterComponent extends BaseComponent {
 

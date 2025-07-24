@@ -31,3 +31,7 @@ bin/
 # fabric
 
 run/
+
+# gadget
+
+src/main/generated/GadgetConfig.java

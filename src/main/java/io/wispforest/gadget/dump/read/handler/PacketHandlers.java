@@ -5,7 +5,6 @@ import io.wispforest.gadget.dump.fake.FakeGadgetPacket;
 import io.wispforest.gadget.dump.read.UnwrappedPacketData;
 import io.wispforest.gadget.dump.read.unwrapped.CustomPayloadUnwrappedPacket;
 import io.wispforest.gadget.dump.read.unwrapped.VanillaUnwrappedPacket;
-import io.wispforest.gadget.util.NetworkUtil;
 import io.wispforest.gadget.util.ReflectionUtil;
 import net.fabricmc.fabric.api.event.Event;
 import net.minecraft.util.Identifier;

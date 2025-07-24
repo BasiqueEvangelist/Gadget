@@ -1,7 +1,6 @@
 package io.wispforest.gadget.util;
 
 import io.netty.buffer.ByteBuf;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.common.CustomPayloadC2SPacket;
@@ -9,8 +8,6 @@ import net.minecraft.network.packet.c2s.login.LoginQueryResponseC2SPacket;
 import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
 import net.minecraft.network.packet.s2c.login.LoginQueryRequestS2CPacket;
 import net.minecraft.util.Identifier;
-
-import java.util.function.Supplier;
 
 public final class NetworkUtil {
     private NetworkUtil() {
