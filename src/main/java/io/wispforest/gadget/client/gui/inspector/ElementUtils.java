@@ -16,9 +16,10 @@ public class ElementUtils {
 
     static {
         VanillaSupport.init();
-        if (FabricLoader.getInstance().isModLoaded("roughlyenoughitems")) {
-            REISupport.init();
-        }
+        // TODO: re-enable once REI ships an unobfuscated 26.1 build.
+//        if (FabricLoader.getInstance().isModLoaded("roughlyenoughitems")) {
+//            REISupport.init();
+//        }
     }
 
     @SuppressWarnings("unchecked")

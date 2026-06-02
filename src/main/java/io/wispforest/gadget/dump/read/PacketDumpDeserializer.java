@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.zip.GZIPInputStream;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.FriendlyByteBufs;
 import net.minecraft.client.multiplayer.RegistryDataCollector;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -70,7 +70,7 @@ public class PacketDumpDeserializer {
     private static ReadPacketDump readV1(InputStream is) {
         List<DumpedPacket> list = new ArrayList<>();
 
-        FriendlyByteBuf buf = PacketByteBufs.create();
+        FriendlyByteBuf buf = FriendlyByteBufs.create();
 
         Int2ObjectMap<Identifier> loginQueryChannels = new Int2ObjectOpenHashMap<>();
         RegistryAccess registries = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);

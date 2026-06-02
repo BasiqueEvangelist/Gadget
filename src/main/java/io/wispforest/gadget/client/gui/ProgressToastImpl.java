@@ -10,7 +10,7 @@ import io.wispforest.owo.ui.core.*;
 import java.util.function.LongSupplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.network.chat.Component;
@@ -56,7 +56,7 @@ public class ProgressToastImpl implements Toast, ProgressToast {
     }
 
     @Override
-    public void render(GuiGraphics ctx, Font textRenderer, long startTime) {
+    public void extractRenderState(GuiGraphicsExtractor ctx, Font textRenderer, long startTime) {
         long value = following == null ? -1 : following.getAsLong();
 
         if (value < 0) {
@@ -66,7 +66,7 @@ public class ProgressToastImpl implements Toast, ProgressToast {
             progressBox.horizontalSizing(Sizing.fixed((int) (value * 140 / followingTotal)));
         }
 
-        this.adapter.render(ctx, 0, 0, client.getDeltaTracker().getGameTimeDeltaPartialTick(false));
+        this.adapter.extractRenderState(ctx, 0, 0, client.getDeltaTracker().getGameTimeDeltaPartialTick(false));
     }
 
     @Override
