@@ -23,14 +23,7 @@ import io.wispforest.gadget.network.packet.c2s.OpenFieldDataScreenC2SPacket;
 import io.wispforest.gadget.network.packet.c2s.RequestResourceC2SPacket;
 import io.wispforest.gadget.network.packet.s2c.*;
 import io.wispforest.owo.config.ui.ConfigScreenProviders;
-import io.wispforest.owo.ui.component.UIComponents;
-import io.wispforest.owo.ui.container.UIContainers;
-import io.wispforest.owo.ui.core.Insets;
-import io.wispforest.owo.ui.core.Sizing;
-import io.wispforest.owo.ui.layers.Layer;
-import io.wispforest.owo.ui.layers.Layers;
 import java.io.ByteArrayInputStream;
-import java.util.List;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -41,14 +34,10 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.PauseScreen;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.BlockHitResult;
@@ -173,30 +162,6 @@ public class GadgetClient implements ClientModInitializer {
                 ClientPacketDumper.start(true);
             }
         });
-
-        List<String> alignToButtons = List.of(
-            "menu.multiplayer",
-            "menu.shareToLan",
-            "menu.playerReporting"
-        );
-
-        Layers.add(UIContainers::verticalFlow, instance -> {
-            if (!Gadget.CONFIG.menuButtonEnabled()) return;
-
-            instance.adapter.rootComponent.child(
-                    UIComponents.button(
-                    Component.translatable("text.gadget.menu_button"),
-                    button -> Minecraft.getInstance().setScreenAndShow(new GadgetScreen(instance.screen))
-                ).<Button>configure(button -> {
-                    button.margins(Insets.left(4)).sizing(Sizing.fixed(20));
-                    instance.alignComponentToWidget(widget -> {
-                        if (!(widget instanceof Button daButton)) return false;
-                        return daButton.getMessage().getContents() instanceof TranslatableContents translatable
-                            && alignToButtons.contains(translatable.getKey());
-                    }, Layer.Instance.AnchorSide.RIGHT, 0, button);
-                })
-            );
-        }, TitleScreen.class, PauseScreen.class);
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof AbstractContainerScreen<?> handled)

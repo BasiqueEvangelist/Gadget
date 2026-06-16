@@ -32,6 +32,8 @@
         "client.GameRendererMixin",
         "client.GuiAccessor",
         "client.KeyboardHandlerMixin",
+        "client.PauseScreenMixin",
+        "client.TitleScreenMixin",
         "client.LevelRendererMixin",
         "client.MinecraftMixin",
         "client.NarratorMixin",
