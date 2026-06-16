@@ -30,6 +30,7 @@
         "client.ClientConfigurationPacketListenerImplMixin",
         "client.DisconnectedScreenMixin",
         "client.GameRendererMixin",
+        "client.GuiAccessor",
         "client.KeyboardHandlerMixin",
         "client.LevelRendererMixin",
         "client.MinecraftMixin",

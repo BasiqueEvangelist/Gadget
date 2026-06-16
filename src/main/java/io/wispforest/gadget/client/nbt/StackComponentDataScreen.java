@@ -161,6 +161,6 @@ public class StackComponentDataScreen extends BaseOwoScreen<FlowLayout> {
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        minecraft.setScreenAndShow(parent);
     }
 }

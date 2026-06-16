@@ -82,7 +82,7 @@ public class OpenDumpScreen extends BaseOwoScreen<FlowLayout> {
                     throw new RuntimeException(e);
                 }
             })
-            .thenAcceptAsync(client::setScreen, client),
+            .thenAcceptAsync(client::setScreenAndShow, client),
             true);
     }
 
@@ -197,7 +197,7 @@ public class OpenDumpScreen extends BaseOwoScreen<FlowLayout> {
 
                         return new DumpStatsScreen(this, reader, toast);
                     })
-                    .thenAcceptAsync(minecraft::setScreen, minecraft),
+                    .thenAcceptAsync(minecraft::setScreenAndShow, minecraft),
                 true);
         });
 
@@ -381,6 +381,6 @@ public class OpenDumpScreen extends BaseOwoScreen<FlowLayout> {
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        minecraft.setScreenAndShow(parent);
     }
 }

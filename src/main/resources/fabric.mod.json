@@ -52,7 +52,7 @@
     "depends": {
         "fabricloader": ">=0.19.2",
         "fabric-api": ">=0.150.0",
-        "minecraft": ">=26.1.2",
+        "minecraft": ">=26.2",
         "java": ">=21",
         "owo": ">=0.13.0",
         "fabric-permissions-api-v0": ">=0.7.0"

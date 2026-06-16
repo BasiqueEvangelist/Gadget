@@ -93,7 +93,7 @@ public class DumpStatsScreen extends BaseOwoScreen<FlowLayout> {
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        minecraft.setScreenAndShow(parent);
     }
 
     private static class PacketTypeData {

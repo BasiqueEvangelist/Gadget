@@ -63,7 +63,7 @@ dependencies {
 
 	compileOnly "org.quiltmc:quiltflower:${project.quiltflower}"
 
-	localRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
+//	localRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 //	localRuntime "vazkii.patchouli:Patchouli:1.19.2-76-FABRIC"
 //	localRuntime "dev.emi:trinkets:3.4.0"

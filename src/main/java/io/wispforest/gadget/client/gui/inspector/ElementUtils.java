@@ -5,13 +5,14 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.util.Tuple;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
 public class ElementUtils {
-    private static final List<Tuple<Class<?>, ElementSupport<?>>> ELEMENT_SUPPORTS = new ArrayList<>();
+    private record ElementSupportEntry(Class<?> type, ElementSupport<?> support) {}
+
+    private static final List<ElementSupportEntry> ELEMENT_SUPPORTS = new ArrayList<>();
     private static final List<BiConsumer<Screen, List<ContainerEventHandler>>> ROOT_LISTERS = new ArrayList<>();
 
     static {
@@ -25,8 +26,8 @@ public class ElementUtils {
     @SuppressWarnings("unchecked")
     private static int getThroughSupport(GuiEventListener element, ElementSupportGetter getter) {
         for (var pair : ELEMENT_SUPPORTS) {
-            if (pair.getA().isInstance(element)) {
-                ElementSupport<GuiEventListener> support = (ElementSupport<GuiEventListener>) pair.getB();
+            if (pair.type().isInstance(element)) {
+                ElementSupport<GuiEventListener> support = (ElementSupport<GuiEventListener>) pair.support();
                 int val = getter.get(support, element);
 
                 if (val != -1)
@@ -38,7 +39,7 @@ public class ElementUtils {
     }
 
     public static <T extends GuiEventListener> void registerElementSupport(Class<T> klass, ElementSupport<T> support) {
-        ELEMENT_SUPPORTS.add(new Tuple<>(klass, support));
+        ELEMENT_SUPPORTS.add(new ElementSupportEntry(klass, support));
     }
 
     public static void registerRootLister(BiConsumer<Screen, List<ContainerEventHandler>> rootLister) {

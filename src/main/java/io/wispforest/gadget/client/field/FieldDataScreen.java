@@ -105,7 +105,7 @@ public class FieldDataScreen extends BaseOwoScreen<FlowLayout> {
                 if (isClient())
                     GadgetNetworking.CHANNEL.clientHandle().send(new OpenFieldDataScreenC2SPacket(target));
                 else
-                    minecraft.setScreen(new FieldDataScreen(
+                    minecraft.setScreenAndShow(new FieldDataScreen(
                         target,
                         true,
                         true, null,

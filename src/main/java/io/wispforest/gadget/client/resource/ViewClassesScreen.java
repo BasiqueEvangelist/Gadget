@@ -77,7 +77,7 @@ public class ViewClassesScreen extends BaseOwoScreen<FlowLayout> {
 
                     return screen;
                 })
-                .thenAcceptAsync(client::setScreen, client),
+                .thenAcceptAsync(client::setScreenAndShow, client),
             true);
     }
 
@@ -260,7 +260,7 @@ public class ViewClassesScreen extends BaseOwoScreen<FlowLayout> {
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        minecraft.setScreenAndShow(parent);
     }
 
     private static class TreeEntry {
