@@ -1,5 +1,6 @@
 package io.wispforest.gadget.client.gui;
 
+import io.wispforest.gadget.mixin.client.GuiAccessor;
 import io.wispforest.gadget.util.ProgressToast;
 import io.wispforest.owo.ui.component.BoxComponent;
 import io.wispforest.owo.ui.component.LabelComponent;
@@ -10,7 +11,7 @@ import io.wispforest.owo.ui.core.*;
 import java.util.function.LongSupplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.network.chat.Component;
@@ -56,7 +57,7 @@ public class ProgressToastImpl implements Toast, ProgressToast {
     }
 
     @Override
-    public void render(GuiGraphics ctx, Font textRenderer, long startTime) {
+    public void extractRenderState(GuiGraphicsExtractor ctx, Font textRenderer, long startTime) {
         long value = following == null ? -1 : following.getAsLong();
 
         if (value < 0) {
@@ -66,7 +67,7 @@ public class ProgressToastImpl implements Toast, ProgressToast {
             progressBox.horizontalSizing(Sizing.fixed((int) (value * 140 / followingTotal)));
         }
 
-        this.adapter.render(ctx, 0, 0, client.getDeltaTracker().getGameTimeDeltaPartialTick(false));
+        this.adapter.extractRenderState(ctx, 0, 0, client.getDeltaTracker().getGameTimeDeltaPartialTick(false));
     }
 
     @Override
@@ -94,7 +95,7 @@ public class ProgressToastImpl implements Toast, ProgressToast {
     public void step(Component text) {
         Minecraft.getInstance().execute(() -> {
             if (!attached) {
-                Minecraft.getInstance().getToastManager().addToast(this);
+                Minecraft.getInstance().gui.toastManager().addToast(this);
                 attached = true;
             }
 
@@ -116,7 +117,7 @@ public class ProgressToastImpl implements Toast, ProgressToast {
     public void force() {
         Minecraft.getInstance().execute(() -> {
             if (!attached) {
-                Minecraft.getInstance().getToastManager().addToast(this);
+                Minecraft.getInstance().gui.toastManager().addToast(this);
                 attached = true;
             }
         });
@@ -133,8 +134,8 @@ public class ProgressToastImpl implements Toast, ProgressToast {
 
     public void oom(OutOfMemoryError oom) {
         adapter.rootComponent.clearChildren();
-        client.screen.removed();
-        client.screen = null;
+        client.gui.screen().removed();
+        ((GuiAccessor) client.gui).gadget$setScreen(null);
 
         following = null;
         adapter = null;
@@ -142,7 +143,7 @@ public class ProgressToastImpl implements Toast, ProgressToast {
         progressBox = null;
 
         client.execute(() -> {
-            client.getToastManager().clear();
+            client.gui.toastManager().clear();
 
             throw oom;
         });

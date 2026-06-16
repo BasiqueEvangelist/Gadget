@@ -23,32 +23,21 @@ import io.wispforest.gadget.network.packet.c2s.OpenFieldDataScreenC2SPacket;
 import io.wispforest.gadget.network.packet.c2s.RequestResourceC2SPacket;
 import io.wispforest.gadget.network.packet.s2c.*;
 import io.wispforest.owo.config.ui.ConfigScreenProviders;
-import io.wispforest.owo.ui.component.UIComponents;
-import io.wispforest.owo.ui.container.UIContainers;
-import io.wispforest.owo.ui.core.Insets;
-import io.wispforest.owo.ui.core.Sizing;
-import io.wispforest.owo.ui.layers.Layer;
-import io.wispforest.owo.ui.layers.Layers;
 import java.io.ByteArrayInputStream;
-import java.util.List;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.PauseScreen;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.BlockHitResult;
@@ -62,8 +51,8 @@ public class GadgetClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        KeyBindingHelper.registerKeyBinding(INSPECT_KEY);
-        KeyBindingHelper.registerKeyBinding(DUMP_KEY);
+        KeyMappingHelper.registerKeyMapping(INSPECT_KEY);
+        KeyMappingHelper.registerKeyMapping(DUMP_KEY);
 
         ClientPacketHandlers.init();
         ServerData.init();
@@ -73,7 +62,7 @@ public class GadgetClient implements ClientModInitializer {
         ConfigScreenProviders.register("gadget", GadgetConfigScreen::new);
 
         GadgetNetworking.CHANNEL.registerClientbound(OpenFieldDataScreenS2CPacket.class, (packet, access) -> {
-            access.runtime().setScreen(new FieldDataScreen(
+            access.runtime().setScreenAndShow(new FieldDataScreen(
                 packet.target(),
                 false,
                 true, packet.rootData(),
@@ -82,7 +71,7 @@ public class GadgetClient implements ClientModInitializer {
         });
 
         GadgetNetworking.CHANNEL.registerClientbound(FieldDataResponseS2CPacket.class, (packet, access) -> {
-            if (access.runtime().screen instanceof FieldDataScreen gui
+            if (access.runtime().gui.screen() instanceof FieldDataScreen gui
                 && gui.target().equals(packet.target())
                 && gui.dataSource() instanceof RemoteFieldDataSource remote) {
                 remote.acceptPacket(packet);
@@ -90,7 +79,7 @@ public class GadgetClient implements ClientModInitializer {
         });
 
         GadgetNetworking.CHANNEL.registerClientbound(FieldDataErrorS2CPacket.class, (packet, access) -> {
-            if (access.runtime().screen instanceof FieldDataScreen gui
+            if (access.runtime().gui.screen() instanceof FieldDataScreen gui
                 && gui.target().equals(packet.target())
                 && gui.dataSource() instanceof RemoteFieldDataSource remote) {
                 remote.acceptPacket(packet);
@@ -98,23 +87,23 @@ public class GadgetClient implements ClientModInitializer {
         });
 
         GadgetNetworking.CHANNEL.registerClientbound(ResourceListS2CPacket.class, (packet, access) -> {
-            var screen = new ViewResourcesScreen(access.runtime().screen, packet.resources());
+            var screen = new ViewResourcesScreen(access.runtime().gui.screen(), packet.resources());
 
             screen.resRequester(
                 (id, idx) -> GadgetNetworking.CHANNEL.clientHandle().send(new RequestResourceC2SPacket(id, idx)));
 
-            access.runtime().setScreen(screen);
+            access.runtime().setScreenAndShow(screen);
         });
 
         GadgetNetworking.CHANNEL.registerClientbound(ResourceDataS2CPacket.class, (packet, access) -> {
-            if (!(access.runtime().screen instanceof ViewResourcesScreen screen))
+            if (!(access.runtime().gui.screen() instanceof ViewResourcesScreen screen))
                 return;
 
             screen.openFile(packet.id(), () -> new ByteArrayInputStream(packet.data()));
         });
 
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            if (client.getOverlay() == null) {
+            if (client.gui.overlay() == null) {
                 MappingsManager.init();
             }
         });
@@ -148,11 +137,11 @@ public class GadgetClient implements ClientModInitializer {
 
             if (!GadgetNetworking.CHANNEL.canSendToServer()) {
                 if (target.resolve(client.level) == null) {
-                    client.player.displayClientMessage(Component.translatable("message.gadget.fail.notfound"), true);
+                    client.player.sendOverlayMessage(Component.translatable("message.gadget.fail.notfound"));
                     return;
                 }
 
-                client.setScreen(new FieldDataScreen(
+                client.setScreenAndShow(new FieldDataScreen(
                     target,
                     true,
                     false,
@@ -174,30 +163,6 @@ public class GadgetClient implements ClientModInitializer {
             }
         });
 
-        List<String> alignToButtons = List.of(
-            "menu.multiplayer",
-            "menu.shareToLan",
-            "menu.playerReporting"
-        );
-
-        Layers.add(UIContainers::verticalFlow, instance -> {
-            if (!Gadget.CONFIG.menuButtonEnabled()) return;
-
-            instance.adapter.rootComponent.child(
-                    UIComponents.button(
-                    Component.translatable("text.gadget.menu_button"),
-                    button -> Minecraft.getInstance().setScreen(new GadgetScreen(instance.screen))
-                ).<Button>configure(button -> {
-                    button.margins(Insets.left(4)).sizing(Sizing.fixed(20));
-                    instance.alignComponentToWidget(widget -> {
-                        if (!(widget instanceof Button daButton)) return false;
-                        return daButton.getMessage().getContents() instanceof TranslatableContents translatable
-                            && alignToButtons.contains(translatable.getKey());
-                    }, Layer.Instance.AnchorSide.RIGHT, 0, button);
-                })
-            );
-        }, TitleScreen.class, PauseScreen.class);
-
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof AbstractContainerScreen<?> handled)
                 ScreenKeyboardEvents.allowKeyPress(screen).register((screen1, input) -> {
@@ -213,7 +178,7 @@ public class GadgetClient implements ClientModInitializer {
                     if (slot instanceof CreativeModeInventoryScreen.CustomCreativeSlot) return true;
                     if (slot.getItem().isEmpty()) return true;
 
-                    client.setScreen(new StackComponentDataScreen(handled, slot));
+                    client.setScreenAndShow(new StackComponentDataScreen(handled, slot));
 
                     return false;
                 });

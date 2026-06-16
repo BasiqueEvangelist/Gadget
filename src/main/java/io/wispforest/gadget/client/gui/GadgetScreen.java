@@ -90,7 +90,7 @@ public class GadgetScreen extends BaseOwoScreen<FlowLayout> {
                     (id, idx) -> screen.openFile(
                         id, minecraft.getResourceManager().getResourceStack(id).get(idx)::open));
 
-                minecraft.setScreen(screen);
+                minecraft.setScreenAndShow(screen);
             });
 
         main.child(inspectResources);
@@ -171,6 +171,6 @@ public class GadgetScreen extends BaseOwoScreen<FlowLayout> {
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        minecraft.setScreenAndShow(parent);
     }
 }

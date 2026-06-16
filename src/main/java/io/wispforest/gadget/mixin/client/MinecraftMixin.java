@@ -23,8 +23,8 @@ public class MinecraftMixin {
         PoseStackLogger.startLoggingIfNeeded();
     }
 
-    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V", at = @At("RETURN"))
-    private void onDisconnect(Screen disconnectionScreen, boolean transferring, CallbackInfo ci) {
+    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;ZZ)V", at = @At("RETURN"))
+    private void onDisconnect(Screen disconnectionScreen, boolean transferring, boolean b, CallbackInfo ci) {
         if (DumpPrimer.isPrimed) {
             ClientPacketDumper.start(false);
 
