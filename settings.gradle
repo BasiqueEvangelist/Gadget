@@ -1,4 +1,12 @@
 pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            // new-id marker may 404; the descriptor lives inside the loom jar
+            if (requested.id.id == "net.fabricmc.fabric-loom") {
+                useModule("net.fabricmc:fabric-loom:" + requested.version)
+            }
+        }
+    }
     repositories {
         maven {
             name = 'Fabric'

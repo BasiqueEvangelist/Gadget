@@ -1,4 +1,4 @@
-accessWidener v2 named
+accessWidener v2 official
 
 accessible class net/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen$CustomCreativeSlot
 accessible class net/minecraft/client/gui/components/AbstractSelectionList$Entry

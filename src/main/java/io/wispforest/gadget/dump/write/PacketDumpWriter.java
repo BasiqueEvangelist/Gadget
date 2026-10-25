@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.wispforest.gadget.Gadget;
 import io.wispforest.gadget.util.NetworkUtil;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.FriendlyByteBufs;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.ProtocolInfo;
 import net.minecraft.network.protocol.Packet;
@@ -58,7 +58,7 @@ public class PacketDumpWriter implements AutoCloseable {
     public void write(Packet<?> packet, ProtocolInfo<?> state) {
         if (output == null) return;
 
-        FriendlyByteBuf buf = PacketByteBufs.create();
+        FriendlyByteBuf buf = FriendlyByteBufs.create();
 
         short flags = 0;
 

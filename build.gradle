@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.15-SNAPSHOT'
+	id 'net.fabricmc.fabric-loom' version '1.19.3'
 	id 'maven-publish'
 }
 
@@ -44,33 +44,38 @@ sourceSets {
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.officialMojangMappings()
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	// Minecraft is unobfuscated since 26.1; no mappings
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation annotationProcessor("io.wispforest:owo-lib:${project.owo_version}")
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	implementation annotationProcessor("maven.modrinth:owo-lib:${project.owo_version}")
 
-	modImplementation include("me.lucko:fabric-permissions-api:${project.fabric_perms_api}")
+	// endec ships inside owo-lib as a JiJ, but the bare Modrinth-maven POM does
+	// not declare it, and owo's EndecBuffer/MapCarrier are needed at compile time
+	compileOnly(files("libs/endec-0.1.12.jar"))
+	compileOnly("blue.endless:jankson:1.2.3")
+
+	implementation include("me.lucko:fabric-permissions-api:${project.fabric_perms_api}")
 
 	implementation include("net.fabricmc:mapping-io:${project.mapping_io}")
 	implementation include("net.auoeke:result:${project.auoeke_result}")
 	implementation include("net.auoeke:unsafe:${project.auoeke_unsafe}")
 	implementation include("net.auoeke:reflect:${project.auoeke_reflect}")
 
-	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
+	compileOnly "maven.modrinth:rei:${project.rei_id}"
 
-	modCompileOnly "org.quiltmc:quiltflower:${project.quiltflower}"
+	compileOnly "org.quiltmc:quiltflower:${project.quiltflower}"
 
-	modLocalRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
+	localRuntime "maven.modrinth:modmenu:${project.modmenu_id}"
 
-//	modLocalRuntime "vazkii.patchouli:Patchouli:1.19.2-76-FABRIC"
-//	modLocalRuntime "dev.emi:trinkets:3.4.0"
-//	modLocalRuntime "me.shedaniel:RoughlyEnoughItems-fabric:9.1.530"
-//	modLocalRuntime "dev.architectury:architectury-fabric:6.3.49"
-//	modLocalRuntime "com.glisco:things:0.2.20+1.19"
-	modLocalRuntime "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}"
-//	modLocalRuntime "maven.modrinth:auth-me:${project.auth_me}"
+//	localRuntime "vazkii.patchouli:Patchouli:1.19.2-76-FABRIC"
+//	localRuntime "dev.emi:trinkets:3.4.0"
+//	localRuntime "me.shedaniel:RoughlyEnoughItems-fabric:9.1.530"
+//	localRuntime "dev.architectury:architectury-fabric:6.3.49"
+//	localRuntime "com.glisco:things:0.2.20+1.19"
+	localRuntime "maven.modrinth:cloth-config:${project.cloth_id}"
+//	localRuntime "maven.modrinth:auth-me:${project.auth_me}"
 
 	testmodImplementation sourceSets.main.output
 }
@@ -102,7 +107,7 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
 	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	it.options.release = 21
+	it.options.release = 25
 }
 
 java {
@@ -111,8 +116,8 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
 
 base {

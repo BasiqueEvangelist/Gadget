@@ -6,7 +6,7 @@ import io.wispforest.owo.ui.container.UIContainers;
 import io.wispforest.owo.ui.core.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.network.chat.Component;
@@ -49,8 +49,8 @@ public class NotificationToast implements Toast {
     }
 
     @Override
-    public void render(GuiGraphics ctx, Font textRenderer, long startTime) {
-        this.adapter.render(ctx, 0, 0, client.getDeltaTracker().getGameTimeDeltaPartialTick(false));
+    public void extractRenderState(GuiGraphicsExtractor ctx, Font textRenderer, long startTime) {
+        this.adapter.extractRenderState(ctx, 0, 0, client.getDeltaTracker().getGameTimeDeltaPartialTick(false));
     }
 
     @Override

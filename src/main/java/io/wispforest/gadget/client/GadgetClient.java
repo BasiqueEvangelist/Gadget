@@ -34,7 +34,7 @@ import java.util.List;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -62,8 +62,8 @@ public class GadgetClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        KeyBindingHelper.registerKeyBinding(INSPECT_KEY);
-        KeyBindingHelper.registerKeyBinding(DUMP_KEY);
+        KeyMappingHelper.registerKeyMapping(INSPECT_KEY);
+        KeyMappingHelper.registerKeyMapping(DUMP_KEY);
 
         ClientPacketHandlers.init();
         ServerData.init();
@@ -148,7 +148,7 @@ public class GadgetClient implements ClientModInitializer {
 
             if (!GadgetNetworking.CHANNEL.canSendToServer()) {
                 if (target.resolve(client.level) == null) {
-                    client.player.displayClientMessage(Component.translatable("message.gadget.fail.notfound"), true);
+                    client.player.sendOverlayMessage(Component.translatable("message.gadget.fail.notfound"));
                     return;
                 }
 

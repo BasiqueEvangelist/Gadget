@@ -50,11 +50,11 @@
     },
 
     "depends": {
-        "fabricloader": ">=0.18.4",
-        "fabric-api": ">=0.141.3",
-        "minecraft": ">=1.21.11",
-        "java": ">=21",
-        "owo": ">=0.13.0",
-        "fabric-permissions-api-v0": ">=0.6.1"
+        "fabricloader": ">=0.20.1",
+        "fabric-api": ">=0.155.3",
+        "minecraft": ">=26.1",
+        "java": ">=25",
+        "owo": ">=0.13.1",
+        "fabric-permissions-api-v0": ">=0.7.0"
     }
 }
